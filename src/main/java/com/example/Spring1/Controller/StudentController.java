@@ -2,11 +2,12 @@ package com.example.Spring1.Controller;
 
 import com.example.Spring1.DTO.Student;
 import com.example.Spring1.Service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -26,7 +27,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(
-            @PathVariable String id) {
+            @RequestParam String id) {
         Student student = studentService.getStudentById(id);
         if (student != null) {
             return ResponseEntity.ok(student);
@@ -35,9 +36,9 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update")
     public ResponseEntity<Student> updateStudent(
-            @PathVariable String id, @RequestBody Student student) {
+            @RequestParam String id, @RequestBody Student student) {
         Student updatedStudent = studentService.updateStudent(id, student);
         if (updatedStudent != null) {
             return ResponseEntity.ok(updatedStudent);
@@ -48,7 +49,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(
-            @PathVariable String id) {
+            @RequestParam String id) {
         boolean isDeleted = studentService.deleteStudent(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
@@ -57,9 +58,12 @@ public class StudentController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/studentList")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
     }
 }
+
+
+
